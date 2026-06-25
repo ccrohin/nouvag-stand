@@ -1,3 +1,6 @@
+// Configuration Parameters
+include_lower_baseplate = false; // Set to false to remove the lower portion of the baseplate
+
 // Base Plate
 $fn = 50; // Smoothness setting
 minkowski() {
@@ -143,5 +146,7 @@ minkowski() {
     sphere(r=0.5, $fn=30);
 }  
 
-translate([0, 0, -4])
-cube([56, 96, 3]); // Cube
+if (include_lower_baseplate) {
+    translate([0, 0, -4])
+    cube([56, 96, 3]); // Cube
+}
