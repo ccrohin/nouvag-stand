@@ -46,6 +46,12 @@ difference() {
     #translate([8, 79.2, -5]) cylinder(h=10, d=3, $fn=30);
     #translate([48, 14.2, -5]) cylinder(h=10, d=3, $fn=30);
     #translate([48, 79.2, -5]) cylinder(h=10, d=3, $fn=30);
+    
+    // Magnet pocket floor drainage grooves (prevents sealing of drainage holes by flat magnets)
+    #translate([-2, 14.2 - 1, -0.6]) cube([18, 2, 1.2]);
+    #translate([-2, 79.2 - 1, -0.6]) cube([18, 2, 1.2]);
+    #translate([41, 14.2 - 1, -0.6]) cube([17, 2, 1.2]);
+    #translate([41, 79.2 - 1, -0.6]) cube([17, 2, 1.2]);
 }
 
 // Motor Riser
@@ -116,6 +122,10 @@ difference() {
     // Magnet cutout drainage hole (fluid release)
     #translate([28,90,-5])
         cylinder(h=15, d=3, $fn=30);
+        
+    // Magnet pocket floor cross-grooves (prevents sealing of drainage hole by flat magnet)
+    #translate([28, 90, 8]) cube([13, 2, 1.2], center=true);
+    #translate([28, 90, 8]) cube([2, 13, 1.2], center=true);
         
     // Hexagonal tool slots (using global parameters)
     rotate([90,0,0])
