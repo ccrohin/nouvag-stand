@@ -15,26 +15,26 @@ difference() {
     // Magnet cutout #1 (centered on top surface)
     translate([8, 14.2, 0])  // Center XY, position at Z=3 (5mm height - 2mm depth)
     #cylinder(h=2.8, d=13.4);  // 2mm deep, 13mm diameter hole
-    translate([0, 7.5, 0])
-    #cube([9, 13.4, 2.8]);
+    translate([-2, 7.5, 0])
+    #cube([11, 13.4, 2.8]); // Extended X-axis to clear 0.5mm minkowski expansion
     
     // Magnet cutout #2 (centered on top surface)
     translate([8, 14+65.2, 0])  // Center XY, position at Z=3 (5mm height - 2mm depth)
     #cylinder(h=2.8, d=13.4);  // 2mm deep, 13mm diameter hole
-    translate([0, 7.5+65, 0])
-    #cube([9, 13.4, 2.8]);
+    translate([-2, 7.5+65, 0])
+    #cube([11, 13.4, 2.8]); // Extended X-axis to clear 0.5mm minkowski expansion
     
     // Magnet cutout #3 (centered on top surface)
     translate([6+42, 14.2, 0])  // Center XY, position at Z=3 (5mm height - 2mm depth)
     #cylinder(h=2.8, d=13.4);  // 2mm deep, 13mm diameter hole
-    translate([-3+50, 7.5, 0])
-    #cube([9, 13.4, 2.8]);
+    translate([47, 7.5, 0])
+    #cube([11, 13.4, 2.8]); // Extended X-axis to clear 0.5mm minkowski expansion
     
     // Magnet cutout #4 (centered on top surface)
     translate([6+42, 14+65.2, 0])  // Center XY, position at Z=3 (5mm height - 2mm depth)
     #cylinder(h=2.8, d=13.4);  // 2mm deep, 13mm diameter hole
-    translate([-3+50, 7.5+65, 0])
-    #cube([9, 13.4, 2.8]);
+    translate([47, 7.5+65, 0])
+    #cube([11, 13.4, 2.8]); // Extended X-axis to clear 0.5mm minkowski expansion
 }
 
 // Motor Riser
