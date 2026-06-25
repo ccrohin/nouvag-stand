@@ -35,6 +35,12 @@ difference() {
     #cylinder(h=2.8, d=13.4);  // 2mm deep, 13mm diameter hole
     translate([47, 7.5+65, 0])
     #cube([11, 13.4, 2.8]); // Extended X-axis to clear 0.5mm minkowski expansion
+    
+    // Magnet drainage holes (fluid/condensate release)
+    #translate([8, 14.2, -5]) cylinder(h=10, d=3, $fn=30);
+    #translate([8, 79.2, -5]) cylinder(h=10, d=3, $fn=30);
+    #translate([48, 14.2, -5]) cylinder(h=10, d=3, $fn=30);
+    #translate([48, 79.2, -5]) cylinder(h=10, d=3, $fn=30);
 }
 
 // Motor Riser
@@ -106,6 +112,10 @@ difference() {
     rotate([0,0,0])
         translate([28,90,8])
             cylinder(h=11, r=5.8, $fn=100);
+            
+    // Magnet cutout drainage hole (fluid release)
+    #translate([28,90,-5])
+        cylinder(h=15, d=3, $fn=30);
             
     width = 10;        // Width across flats
     length = 30;      // Cylinder height
