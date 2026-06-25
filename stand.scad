@@ -1,6 +1,11 @@
 // Configuration Parameters
 include_lower_baseplate = false; // Set to false to remove the lower portion of the baseplate
 
+// Hexagonal Tool Slot Parameters
+hex_slot_width  = 10; // Width across flats
+hex_slot_length = 30; // Cylinder height
+hex_slot_radius = hex_slot_width / (2 * cos(30)); // Derived radius from width (cos(30°) = sqrt(3)/2)
+
 // Base Plate
 $fn = 50; // Smoothness setting
 
@@ -64,27 +69,22 @@ difference() {
         translate([28,30,-20])
             cylinder(h=40, r=13, $fn=100);
             
-    width = 10;        // Width across flats
-    length = 30;      // Cylinder height
-
-    // Calculate radius from width across flats for a regular hexagon
-    radius = width / (2 * cos(30));  // cos(30°) = sqrt(3)/2
-       
+    // Hexagonal tool slots (using global parameters)
     rotate([90,0,0])
         translate([6,10,0])  
-            cylinder(h = length, r = radius, $fn = 6, center = true);
+            cylinder(h = hex_slot_length, r = hex_slot_radius, $fn = 6, center = true);
       
     rotate([90,0,0])
         translate([20,10,0])  
-            cylinder(h = length, r = radius, $fn = 6, center = true);
+            cylinder(h = hex_slot_length, r = hex_slot_radius, $fn = 6, center = true);
    
     rotate([90,0,0])
         translate([34,10,0])  
-            cylinder(h = length, r = radius, $fn = 6, center = true);
+            cylinder(h = hex_slot_length, r = hex_slot_radius, $fn = 6, center = true);
       
     rotate([90,0,0])
         translate([50,10,0])  
-            cylinder(h = length, r = radius, $fn = 6, center = true);
+            cylinder(h = hex_slot_length, r = hex_slot_radius, $fn = 6, center = true);
 }
 
 // Handpiece Riser
@@ -116,36 +116,31 @@ difference() {
     // Magnet cutout drainage hole (fluid release)
     #translate([28,90,-5])
         cylinder(h=15, d=3, $fn=30);
-            
-    width = 10;        // Width across flats
-    length = 30;      // Cylinder height
-
-    // Calculate radius from width across flats for a regular hexagon
-    radius = width / (2 * cos(30));  // cos(30°) = sqrt(3)/2
         
+    // Hexagonal tool slots (using global parameters)
     rotate([90,0,0])
         translate([6,10,-90])  
-            cylinder(h = length, r = radius, $fn = 6, center = true);
+            cylinder(h = hex_slot_length, r = hex_slot_radius, $fn = 6, center = true);
       
     rotate([90,0,0])
         translate([6,25,-90])  
-            cylinder(h = length, r = radius, $fn = 6, center = true);
+            cylinder(h = hex_slot_length, r = hex_slot_radius, $fn = 6, center = true);
    
     rotate([90,0,0])
         translate([50,25,-90])  
-            cylinder(h = length, r = radius, $fn = 6, center = true);
+            cylinder(h = hex_slot_length, r = hex_slot_radius, $fn = 6, center = true);
       
     rotate([90,0,0])
         translate([50,10,-90])  
-            cylinder(h = length, r = radius, $fn = 6, center = true);
+            cylinder(h = hex_slot_length, r = hex_slot_radius, $fn = 6, center = true);
       
     rotate([90,0,0])
         translate([15,18,-90])  
-            cylinder(h = length, r = radius, $fn = 6, center = true);
+            cylinder(h = hex_slot_length, r = hex_slot_radius, $fn = 6, center = true);
       
     rotate([90,0,0])
         translate([40,18,-90])  
-            cylinder(h = length, r = radius, $fn = 6, center = true);
+            cylinder(h = hex_slot_length, r = hex_slot_radius, $fn = 6, center = true);
 }  
 
 if (include_lower_baseplate) {
