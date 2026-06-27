@@ -2,6 +2,19 @@
 include_lower_baseplate = false; // Set to false to remove the lower portion of the baseplate
 include_press_fit_feet  = true;  // Set to false to remove the autoclave-safe press-fit silicone feet holes
 
+// Frog Feet Parameters (for outer magnets and stability)
+frog_foot_radius = 10; // Radius of the protruding feet lobes
+foot_x_left  = -6;     // X coordinate of left feet centers
+foot_x_right = 62;     // X coordinate of right feet centers
+foot_y_front = 12;     // Y coordinate of front feet centers
+foot_y_rear  = 84;     // Y coordinate of rear feet centers
+
+// Silicone Rubber Feet Parameters (optimized for maximum stability, avoiding magnet slots)
+silicone_foot_x_left  = 6;
+silicone_foot_x_right = 50;
+silicone_foot_y_front = 14.2;
+silicone_foot_y_rear  = 79.2;
+
 // Hexagonal Tool Slot Parameters
 hex_slot_width  = 10; // Width across flats
 hex_slot_length = 30; // Cylinder height
@@ -11,42 +24,49 @@ hex_slot_radius = hex_slot_width / (2 * cos(30)); // Derived radius from width (
 $fn = 50; // Smoothness setting
 
 difference() {
-    // Round the main block structure only
+    // Round the main block structure only (including the 4 frog feet lobes)
     minkowski() {
         translate([0,0,-0.8])
-        cube([56, 96, 5]); // Reduced by 4mm (2*r) in each dimension
+        union() {
+            cube([56, 96, 5]);
+            // 4 protruding frog feet lobes (radius offset by -0.5 to account for minkowski sphere)
+            for (pos = [[foot_x_left, foot_y_front], [foot_x_right, foot_y_front], [foot_x_left, foot_y_rear], [foot_x_right, foot_y_rear]]) {
+                translate([pos[0], pos[1], 0])
+                cylinder(h=5, r=frog_foot_radius - 0.5, $fn=50);
+            }
+        }
         sphere(r=0.5, $fn=30); // Radius for rounding
     }
     
-    // Magnet cutout #1 (centered on top surface)
-    translate([8, 14.2, 0])  // Center XY, position at Z=3 (5mm height - 2mm depth)
-    #cylinder(h=2.8, d=13.4);  // 2mm deep, 13mm diameter hole
-    translate([-2, 7.5, 0])
-    #cube([11, 13.4, 2.8]); // Extended X-axis to clear 0.5mm minkowski expansion
+    // Magnet cutout #1 (centered on front-left frog foot)
+    translate([foot_x_left, foot_y_front, 0])
+    #cylinder(h=2.8, d=13.4);
+    translate([foot_x_left - frog_foot_radius - 2, foot_y_front - 13.4/2, 0])
+    #cube([frog_foot_radius + 2, 13.4, 2.8]); // Entry slot from left edge
     
-    // Magnet cutout #2 (centered on top surface)
-    translate([8, 14+65.2, 0])  // Center XY, position at Z=3 (5mm height - 2mm depth)
-    #cylinder(h=2.8, d=13.4);  // 2mm deep, 13mm diameter hole
-    translate([-2, 7.5+65, 0])
-    #cube([11, 13.4, 2.8]); // Extended X-axis to clear 0.5mm minkowski expansion
+    // Magnet cutout #2 (centered on rear-left frog foot)
+    translate([foot_x_left, foot_y_rear, 0])
+    #cylinder(h=2.8, d=13.4);
+    translate([foot_x_left - frog_foot_radius - 2, foot_y_rear - 13.4/2, 0])
+    #cube([frog_foot_radius + 2, 13.4, 2.8]); // Entry slot from left edge
     
-    // Magnet cutout #3 (centered on top surface)
-    translate([6+42, 14.2, 0])  // Center XY, position at Z=3 (5mm height - 2mm depth)
-    #cylinder(h=2.8, d=13.4);  // 2mm deep, 13mm diameter hole
-    translate([47, 7.5, 0])
-    #cube([11, 13.4, 2.8]); // Extended X-axis to clear 0.5mm minkowski expansion
+    // Magnet cutout #3 (centered on front-right frog foot)
+    translate([foot_x_right, foot_y_front, 0])
+    #cylinder(h=2.8, d=13.4);
+    translate([foot_x_right, foot_y_front - 13.4/2, 0])
+    #cube([frog_foot_radius + 2, 13.4, 2.8]); // Entry slot from right edge
     
-    // Magnet cutout #4 (centered on top surface)
-    translate([6+42, 14+65.2, 0])  // Center XY, position at Z=3 (5mm height - 2mm depth)
-    #cylinder(h=2.8, d=13.4);  // 2mm deep, 13mm diameter hole
-    translate([47, 7.5+65, 0])
-    #cube([11, 13.4, 2.8]); // Extended X-axis to clear 0.5mm minkowski expansion
+    // Magnet cutout #4 (centered on rear-right frog foot)
+    translate([foot_x_right, foot_y_rear, 0])
+    #cylinder(h=2.8, d=13.4);
+    translate([foot_x_right, foot_y_rear - 13.4/2, 0])
+    #cube([frog_foot_radius + 2, 13.4, 2.8]); // Entry slot from right edge
     
     // Autoclave-safe press-fit silicone feet stepped through-holes
-    // Placed at X=(18, 38) and Y=(14.2, 79.2) to avoid magnet slots and risers.
+    // Positioned as far outward as possible to maximize stability, while avoiding magnet slots.
     // Each foot is a union of three concentric cylinders creating a mechanical lock.
     if (include_press_fit_feet) {
-        for (pos = [[18, 14.2], [38, 14.2], [18, 79.2], [38, 79.2]]) {
+        for (pos = [[silicone_foot_x_left, silicone_foot_y_front], [silicone_foot_x_right, silicone_foot_y_front], [silicone_foot_x_left, silicone_foot_y_rear], [silicone_foot_x_right, silicone_foot_y_rear]]) {
             translate([pos[0], pos[1], 0]) {
                 // 1. Bottom recess (diameter 8.5mm, Z from -1.4 to 0.2)
                 translate([0, 0, -1.4]) cylinder(h=1.6, d=8.5, $fn=50);
@@ -155,5 +175,11 @@ difference() {
 
 if (include_lower_baseplate) {
     translate([0, 0, -4])
-    cube([56, 96, 3]); // Cube
+    union() {
+        cube([56, 96, 3]);
+        for (pos = [[foot_x_left, foot_y_front], [foot_x_right, foot_y_front], [foot_x_left, foot_y_rear], [foot_x_right, foot_y_rear]]) {
+            translate([pos[0], pos[1], 0])
+            cylinder(h=3, r=frog_foot_radius, $fn=50);
+        }
+    }
 }
